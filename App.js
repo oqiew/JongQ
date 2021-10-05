@@ -9,7 +9,6 @@ import HomeScreen from './src/screens/HomeScreen';
 import { NativeBaseProvider } from 'native-base';
 import SigninScreen from './src/screens/auth/SigninScreen';
 import BookScreen from './src/screens/book/BookScreen';
-
 const Stack = createNativeStackNavigator();
 
 

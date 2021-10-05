@@ -4,18 +4,42 @@ import IconAnt from 'react-native-vector-icons/AntDesign';
 import { color } from '../../colors/colorList';
 import { TouchableOpacity } from 'react-native';
 import { RouteNams } from '../../routes/RouteNames';
-
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from '@react-native-google-signin/google-signin';
 export class SigninScreen extends Component {
 
     SignInGuest() {
         // console.log(this.props)
         this.props.navigation.navigate(RouteNams.Home);
     }
+    google_signIn = async () => {
+        try {
+          await GoogleSignin.hasPlayServices();
+          const {accessToken, idToken} = await GoogleSignin.signIn();
+          setloggedIn(true);
+        } catch (error) {
+          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            // user cancelled the login flow
+            alert('Cancel');
+          } else if (error.code === statusCodes.IN_PROGRESS) {
+            alert('Signin in progress');
+            // operation (f.e. sign in) is in progress already
+          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            alert('PLAY_SERVICES_NOT_AVAILABLE');
+            // play services not available or outdated
+          } else {
+            // some other error happened
+          }
+        }
+      };
     render() {
         return (
             <View style={{ flex: 1, flexDirection: "column", justifyContent: 'center', alignItems: "center", top: -100 }}>
                 <Image source={require('../../assets/logo.png')} alt="logo"
-                    style={{ width: 200, height: 200 }}></Image>
+                    style={{ width: 250, height: 250 }}></Image>
 
                 <Text style={{ margin: 5, fontSize: 15, color: color.softText, top: -50 }}>จัดการคิวของคุณ ให้สะดวกและง่าย ตามใจคุณ </Text>
 
