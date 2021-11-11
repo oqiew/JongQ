@@ -1,33 +1,120 @@
 import React, { Component } from 'react'
-import { Container, Text, View, Heading, NativeBaseProvider, Center, Box, Image, Input, Icon, HStack } from 'native-base';
+import { Container, Heading, NativeBaseProvider, Center, Box, Image, Input, Icon, HStack, ScrollView } from 'native-base';
 import IconAnt from 'react-native-vector-icons/AntDesign';
 import { color } from '../colors/colorList';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Text, View } from 'react-native';
 import mainStyle from '../styles/main.style';
-import { RouteNams } from '../routes/RouteNames';
+import { RouteNames } from '../routes/RouteNames';
+import { ImageConstant } from '../components/ImageConstant';
 
 export class HomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            queue: []
+            queue: [
+                {
+                    CountDown: "00:15",
+                    Q: 1,
+                    Time: "13:00",
+                    ServiceProvider: 'ร้านนายสุข',
+                    color: '#ff8080'
+                },
+                {
+                    CountDown: "00:30",
+                    Q: 2,
+                    Time: "15:00",
+                    ServiceProvider: 'ร้านนายสม',
+                    color: '#ffff80'
+                },
+                {
+                    CountDown: "01:00",
+                    Q: 3,
+                    Time: "17:00",
+                    ServiceProvider: 'ร้านนายสา',
+                    color: '#80ff80'
+                }, {
+                    CountDown: "00:30",
+                    Q: 2,
+                    Time: "15:00",
+                    ServiceProvider: 'ร้านนายสม',
+                    color: '#ffff80'
+                },
+                {
+                    CountDown: "01:00",
+                    Q: 3,
+                    Time: "17:00",
+                    ServiceProvider: 'ร้านนายสา',
+                    color: '#80ff80'
+                }, {
+                    CountDown: "00:30",
+                    Q: 2,
+                    Time: "15:00",
+                    ServiceProvider: 'ร้านนายสม',
+                    color: '#ffff80'
+                },
+                {
+                    CountDown: "01:00",
+                    Q: 3,
+                    Time: "17:00",
+                    ServiceProvider: 'ร้านนายสา',
+                    color: '#80ff80'
+                },
+            ]
         }
+
     }
-    book() {
-        this.props.navigation.navigate(RouteNams.Book)
+    Q() {
+        this.props.navigation.navigate(RouteNames.Queue)
     }
     render() {
         const { queue } = this.state;
         return (
-            <View style={{ flex: 1, flexDirection: "column", alignItems: "center", }}>
-                <Image source={require('../assets/logo.png')} alt="logo"
-                    style={{ width: 200, height: 200 }}></Image>
+            <View style={{ flex: 1, flexDirection: "column", alignItems: "center", width: "100%" }}>
                 {queue.length === 0 ?
-                    <View>
-                        <Text style={{ color: color.softText }}>คุณยังไม่มีรายการจองคิว</Text>
+                    <View style={{ flex: 1, alignItems: "center", height: "100%", justifyContent: "center" }}>
+                        <Image source={ImageConstant.waiting} alt="wait" style={{ width: 150, height: 150, marginBottom: 10 }}></Image>
+                        <Text style={{ color: color.softText, fontSize: 20 }}>คุณยังไม่มีรายการจองคิว</Text>
                     </View>
-                    : <View>
-                    </View>}
+                    :
+                    <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 30 }}>
+
+                        {queue.map((element, i) =>
+                            <View key={i} style={[{
+                                height: 80, marginBottom: 10,
+                                padding: 10,
+                                flexDirection: 'row',
+                                backgroundColor: '#fff',
+                                borderRightColor: element.color, borderRightWidth: 40,
+                            },
+                            mainStyle.dropshadow2]}>
+                                <View style={{
+                                    alignItems: 'center', borderRightColor: element.color, borderRightWidth: 5,
+                                    marginRight: 10,
+                                    justifyContent: 'center', width: 50
+                                }}>
+                                    <Text style={{ fontSize: 50, color: color.softText }}>{element.Q}</Text>
+                                </View>
+                                <View style={{
+                                    alignItems: 'center', borderRightColor: element.color, borderRightWidth: 5,
+                                    marginRight: 10,
+                                    justifyContent: 'center', width: 100
+                                }}>
+                                    <Text style={{ fontSize: 30, color: color.softText }}>{element.CountDown}</Text>
+                                </View>
+                                <View style={{ flexDirection: 'column' }}>
+                                    <Text style={{ fontSize: 20, color: color.softText }}>{element.Time}</Text>
+                                    <Text style={{ fontSize: 20, color: color.softText }}>{element.ServiceProvider}</Text>
+                                </View>
+                            </View>
+                        )}
+
+
+                    </ScrollView>
+
+
+
+                }
+
                 {/* <TouchableOpacity
                     style={{backgroundColor:color.mainColor,width:200,height:100,borderRadius:10,margin:10}}>
                     <Text></Text>
@@ -42,19 +129,28 @@ export class HomeScreen extends Component {
                     position: "absolute", bottom: 0, padding: 10
                 }]}>
                     <HStack space={3}>
-                        <TouchableOpacity style={{ flex: 1, alignItems: "center" }}>
+                        <TouchableOpacity style={{ flex: 1, alignItems: "center" }}
+                            onPress={() => this.props.navigation.navigate(RouteNames.Favorites)}
+                        >
                             <Text>รายการโปรด</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
-                                borderRadius: 50, width: 100, height: 100,
-                                backgroundColor: color.mainColor, alignItems: "center", justifyContent: 'center', top: -50
+                                borderRadius: 50, width: 100, height: 100, borderWidth: 5, borderColor: color.mainColor,
+                                backgroundColor: "#fff",
+                                alignItems: "center", justifyContent: 'center', top: -50
                             }}
-                            onPress={this.book.bind(this)}
+                            onPress={this.Q.bind(this)}
                         >
-                            <Text style={{ textAlign: "center", color: '#fff', fontSize: 36 }}>จอง</Text>
+
+                            <Image source={ImageConstant.logo} alt="logo"
+                                style={{ width: 100, height: 100 }}></Image>
+
+
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ flex: 1, alignItems: "center" }}>
+                        <TouchableOpacity style={{ flex: 1, alignItems: "center" }}
+                            onPress={() => this.props.navigation.navigate(RouteNames.ProfileNormal)}
+                        >
                             <Text>โปรไฟล์</Text>
                         </TouchableOpacity>
                     </HStack>

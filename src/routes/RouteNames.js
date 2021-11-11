@@ -1,7 +1,10 @@
-export const RouteNams = {
+export const RouteNames = {
     Home: 'Home',
     SignIn: 'SignIn',
-    Signup: 'Signup',
-    Profile: 'Profile',
-    Book: 'Book',
+    SignUp: 'SignUp',
+    ProfileNormal: 'ProfileNormal',
+    ProfileServiceProvider: 'ProfileServiceProvider',
+    Queue: 'Queue',
+    MapQ: 'MapQ',
+    Favorites: 'Favorites',
 }

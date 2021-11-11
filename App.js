@@ -1,49 +1,75 @@
-import React from 'react';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-// pages
-import { RouteNams } from './src/routes/RouteNames';
-import HomeScreen from './src/screens/HomeScreen';
+import React, { Component } from 'react'
+import { Text, View } from 'react-native'
+import { StackSignInActive, StackSignOut } from './src/navigations/NavigationStack'
 import { NativeBaseProvider } from 'native-base';
-import SigninScreen from './src/screens/auth/SigninScreen';
-import BookScreen from './src/screens/book/BookScreen';
-const Stack = createNativeStackNavigator();
 
+//redux
+import { setUser } from './src/redux/userReducer';
+import { connect } from 'react-redux';
 
-function App() {
+// firebase
+import Auth from '@react-native-firebase/auth';
+import Firestore from '@react-native-firebase/firestore';
+import { TableNames } from './src/routes/TableNames';
+import { isEmpty } from './src/components/Method';
+import Loading from './src/components/Loading';
 
-  return (
-    <NativeBaseProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="SignIn"
-          headerMode="screen"
-          screenOptions={{
-            headerTintColor: 'white',
-            headerStyle: { backgroundColor: '#4050b5' }, headerTitleAlign: 'center', headerTitleAllowFontScaling: true,
-          }}
-        >
-          <Stack.Screen
-            name={RouteNams.SignIn}
-            component={SigninScreen}
-            options={{ title: 'JongQ', headerShown: false, }}
-          />
-          <Stack.Screen
-            name={RouteNams.Home}
-            component={HomeScreen}
-            options={{ title: 'JongQ', headerShown: false, }}
-          />
-          <Stack.Screen
-            name={RouteNams.Book}
-            component={BookScreen}
-            options={{ title: 'JongQ', headerShown: false, }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </NativeBaseProvider>
-  )
+export class App extends Component {
+  constructor(props) {
+    super(props)
+    this.tbUsers = Firestore().collection(TableNames.Users);
+    this.state = {
+      isSignIn: false,
+      loading: true
+    }
+
+    Auth().onAuthStateChanged(user => {
+      if (user) {
+        // console.log('user login uid', user.uid)
+        this.getUser(user.uid)
+      } else {
+        this.props.setUser({});
+      }
+    })
+  }
+
+  getUser = async (id) => {
+    await this.tbUsers.where('AuthId', '==', id).onSnapshot((query) => {
+      const user = [];
+      query.forEach((doc) => {
+        user.push({ UserId: doc.id, ...doc.data() })
+      })
+      if (!isEmpty(user[0].AuthId)) {
+        this.props.setUser(user[0])
+        this.setState({
+          isSignIn: true,
+          loading: false
+        })
+      }
+
+    })
+  }
+  render() {
+    const { loading, isSignIn } = this.state;
+
+    return (
+      <NativeBaseProvider>
+        <Loading visible={loading}></Loading>
+        {isSignIn ? <StackSignInActive></StackSignInActive> : <StackSignOut></StackSignOut>}
+      </NativeBaseProvider>
+    )
+
+  }
 }
 
-export default App;
+
+const mapStateToProps = state => ({
+  userReducer: state.userReducer,
+});
+
+//used to action (dispatch) in to props
+const mapDispatchToProps = {
+  setUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

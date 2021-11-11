@@ -13,7 +13,7 @@ const Loading = ({ visible }) => {
             cancelable={false}
             textContent={'loading'}
             textStyle={{
-                color: Theme.Main_loading,
+                color: color.mainColor,
                 fontSize: 32, fontWeight: 'normal'
             }} />
     )
