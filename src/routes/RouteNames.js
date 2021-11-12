@@ -5,6 +5,8 @@ export const RouteNames = {
     ProfileNormal: 'ProfileNormal',
     ProfileServiceProvider: 'ProfileServiceProvider',
     Queue: 'Queue',
-    MapQ: 'MapQ',
+    Q: 'Q',
     Favorites: 'Favorites',
+    ServicePovider: 'ServicePovider',
+
 }

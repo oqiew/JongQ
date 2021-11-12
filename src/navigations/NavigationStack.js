@@ -11,9 +11,10 @@ import SignUpScreen from '../screens/auth/SignUpScreen';
 import QueueScreen from '../screens/queue/QueueScreen';
 import ProfileServiceProviderScreen from '../screens/profile/ProfileServiceProviderScreen';
 import ProfileNormalScreen from '../screens/profile/ProfileNormalScreen';
-import MapQScreen from '../screens/queue/MapQScreen';
+import QScreen from '../screens/queue/QScreen';
 import FavoritesScreen from '../screens/favorites/FavoritesScreen';
 import { color } from '../colors/colorList';
+import ServicePoviderScreen from '../screens/ServicePovider/ServicePoviderScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -76,9 +77,9 @@ export function StackSignInActive() {
                     options={{ title: 'JongQ', headerShown: false, }}
                 />
                 <Stack.Screen
-                    name={RouteNames.MapQ}
-                    component={MapQScreen}
-                    options={{ title: 'แผนที่', headerShown: false, }}
+                    name={RouteNames.Q}
+                    component={QScreen}
+                    options={{ title: 'นัดหมาย', headerShown: true, headerStyle: { backgroundColor: color.mainColor } }}
                 />
                 <Stack.Screen
                     name={RouteNames.Queue}
@@ -89,6 +90,11 @@ export function StackSignInActive() {
                     name={RouteNames.Favorites}
                     component={FavoritesScreen}
                     options={{ title: 'ร้านโปรด', headerShown: true, headerStyle: { backgroundColor: color.mainColor } }}
+                />
+                <Stack.Screen
+                    name={RouteNames.ServicePovider}
+                    component={ServicePoviderScreen}
+                    options={{ title: 'คิวนัดหมาย', headerShown: false }}
                 />
             </Stack.Navigator>
 

@@ -91,6 +91,12 @@ export class SignInScreen extends Component {
                     <Text style={{ fontSize: 18, fontWeight: "bold", color: '#0080ff' }} >สมัครสมาชิก</Text>
 
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={{ height: 30 }}
+                    onPress={() => this.props.navigation.navigate(RouteNames.ServicePovider)}>
+                    <Text style={{ fontSize: 18, fontWeight: "bold", color: '#0080ff' }} >ร้าน</Text>
+
+                </TouchableOpacity>
 
             </View>
 
